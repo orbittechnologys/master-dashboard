@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard"
 import Hospital from "./pages/Hospitals";
 import logo from "@/assets/orbit-care.png";
 import AddHospital from "./pages/AddHospital";
+import Patients from "./pages/Patients";
 
 function App() {
   const [activePage, setActivePage] = useState("dashboard");
@@ -93,7 +94,7 @@ const SidePanel = () => (
           <Route
             path="/patients"
             element={
-              <h1 className="text-2xl font-bold">Patients Page Placeholder</h1>
+              <Patients/>
             }
           />
           <Route
