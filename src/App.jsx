@@ -3,7 +3,8 @@ import { Home, Building2, Users, Settings } from "lucide-react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard"
 import Hospital from "./pages/Hospitals";
-  import logo from "@/assets/orbit-care.png";
+import logo from "@/assets/orbit-care.png";
+import AddHospital from "./pages/AddHospital";
 
 function App() {
   const [activePage, setActivePage] = useState("dashboard");
@@ -81,6 +82,12 @@ const SidePanel = () => (
             path="/hospital"
             element={
               <Hospital/>
+            }
+          />
+          <Route
+            path="/addhospital"
+            element={
+             <AddHospital/>
             }
           />
           <Route

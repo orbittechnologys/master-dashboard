@@ -4,6 +4,7 @@ import manipal from "@/assets/manipal.jpg";
 import sakra from "@/assets/sakra.webp";
 import suchirayu from "@/assets/suchirayu.png"
 import hssh from "@/assets/hssh.png";
+import { useNavigate } from "react-router-dom";
 
 const hospitalsData = [
   {
@@ -109,6 +110,7 @@ const hospitalsData = [
 ];
 
 export default function Hospital() {
+    const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
@@ -128,7 +130,7 @@ export default function Hospital() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">All Hospitals</h1>
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#4db6ac] hover:bg-[#399d94] text-white rounded-lg shadow transition">
+        <button onClick={() => navigate("/addhospital")} className="flex items-center gap-2 px-4 py-2 bg-[#4db6ac] hover:bg-[#399d94] text-white rounded-lg shadow transition">
           <Plus size={18} /> Add Hospital
         </button>
       </div>
