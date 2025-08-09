@@ -20,10 +20,10 @@ function Dashboard() {
   ];
 
   const topHospitalsData = [
-    { name: "CityCare Hospital", appointments: 320 },
-    { name: "Green Valley Health", appointments: 280 },
-    { name: "Sunrise Medical", appointments: 250 },
-    { name: "Hopewell Clinic", appointments: 200 },
+    { name: "Sakra World Hospital", appointments: 320 },
+    { name: "Manipal Hospital", appointments: 280 },
+    { name: "KLE Suchirayu Hospital", appointments: 250 },
+    { name: "Aster CMI Hospital", appointments: 200 },
   ];
 
   const COLORS = ["#4DB6AC", "#81C784", "#64B5F6", "#FFD54F"];
