@@ -126,88 +126,99 @@ export default function Hospital() {
   });
 
   return (
-    <div className="flex flex-col h-screen p-6 bg-[#f9fdfc] w-full">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">All Hospitals</h1>
-        <button onClick={() => navigate("/addhospital")} className="flex items-center gap-2 px-4 py-2 bg-[#4db6ac] hover:bg-[#399d94] text-white rounded-lg shadow transition">
-          <Plus size={18} /> Add Hospital
-        </button>
-      </div>
+   <div className="flex flex-col min-h-screen p-4 md:p-6 bg-[#f9fdfc] w-full">
+  {/* Header */}
+  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+    <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+      All Hospitals
+    </h1>
+    <button
+      onClick={() => navigate("/addhospital")}
+      className="flex items-center justify-center gap-2 px-4 py-2 bg-[#4db6ac] hover:bg-[#399d94] text-white rounded-lg shadow transition w-full sm:w-auto"
+    >
+      <Plus size={18} /> Add Hospital
+    </button>
+  </div>
 
-      {/* Search + Filter */}
-      <div className="flex gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 text-gray-400" size={18} />
-          <input
-            type="text"
-            placeholder="Search hospitals..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-[#4db6ac] focus:outline-none"
+  {/* Search + Filter */}
+  <div className="flex flex-col md:flex-row gap-4 mb-6">
+    <div className="relative flex-1">
+      <Search
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        size={18}
+      />
+      <input
+        type="text"
+        placeholder="Search hospitals..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-[#4db6ac] focus:outline-none text-sm"
+      />
+    </div>
+    <select
+      value={selectedCity}
+      onChange={(e) => setSelectedCity(e.target.value)}
+      className="px-4 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-[#4db6ac] focus:outline-none text-sm w-full md:w-auto"
+    >
+      {cities.map((city) => (
+        <option key={city} value={city}>
+          {city}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  {/* Hospital Cards */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 flex-1 overflow-y-auto">
+    {filteredHospitals.map((hospital) => (
+      <div
+        key={hospital.id}
+        className="flex flex-col sm:flex-row bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+      >
+        {/* Logo Section */}
+        <div className="flex-shrink-0 w-full sm:w-1/3 bg-gray-50 flex items-center justify-center p-4">
+          <img
+            src={hospital.logo}
+            alt={hospital.name}
+            className="h-20 sm:h-24 w-auto object-contain"
           />
         </div>
-        <select
-          value={selectedCity}
-          onChange={(e) => setSelectedCity(e.target.value)}
-          className="px-4 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-[#4db6ac] focus:outline-none"
-        >
-          {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </select>
-      </div>
 
-      {/* Hospital Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-auto">
-        {filteredHospitals.map((hospital) => (
-          <div
-            key={hospital.id}
-            className="flex bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
-          >
-            {/* Logo Section */}
-            <div className="flex-shrink-0 w-1/3 bg-gray-50 flex items-center justify-center p-4">
-              <img
-                src={hospital.logo}
-                alt={hospital.name}
-                className="h-fit w-fit object-contain"
-              />
-            </div>
-
-            {/* Info Section */}
-            <div className="flex flex-col justify-between p-4 flex-1">
-              <div>
-                <h2 className="text-lg font-semibold text-gray-800">
-                  {hospital.name}
-                </h2>
-                <p className="text-sm text-gray-500">{hospital.address}</p>
-                <p className="text-sm mt-1 text-gray-600">
-                  Total Appointments:{" "}
-                  <span className="font-medium">{hospital.appointments}</span>
-                </p>
-              </div>
-
-              {/* CTA Buttons */}
-              <div className="flex gap-2 mt-4">
-                <a
-                  href={`tel:${hospital.phone}`}
-                  className="flex items-center gap-1 px-3 py-1 bg-[#4db6ac] text-white rounded-lg text-sm hover:bg-[#399d94] transition"
-                >
-                  <Phone size={14} /> Call
-                </a>
-                <a
-                  href={`mailto:${hospital.email}`}
-                  className="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition"
-                >
-                  <Mail size={14} /> Email
-                </a>
-              </div>
-            </div>
+        {/* Info Section */}
+        <div className="flex flex-col justify-between p-4 flex-1">
+          <div>
+            <h2 className="text-base md:text-lg font-semibold text-gray-800">
+              {hospital.name}
+            </h2>
+            <p className="text-xs md:text-sm text-gray-500">
+              {hospital.address}
+            </p>
+            <p className="text-xs md:text-sm mt-1 text-gray-600">
+              Total Appointments:{" "}
+              <span className="font-medium">{hospital.appointments}</span>
+            </p>
           </div>
-        ))}
+
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            <a
+              href={`tel:${hospital.phone}`}
+              className="flex items-center gap-1 px-3 py-1 bg-[#4db6ac] text-white rounded-lg text-sm hover:bg-[#399d94] transition w-full sm:w-auto justify-center"
+            >
+              <Phone size={14} /> Call
+            </a>
+            <a
+              href={`mailto:${hospital.email}`}
+              className="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition w-full sm:w-auto justify-center"
+            >
+              <Mail size={14} /> Email
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
+    ))}
+  </div>
+</div>
+
   );
 }
