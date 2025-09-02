@@ -173,14 +173,14 @@ export default function Hospital() {
     {filteredHospitals.map((hospital) => (
       <div
         key={hospital.id}
-        className="flex flex-col sm:flex-row bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+        className="flex flex-col sm:flex-row flex-wrap bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
       >
         {/* Logo Section */}
-        <div className="flex-shrink-0 w-full sm:w-1/3 bg-gray-50 flex items-center justify-center p-4">
+        <div className="flex-shrink-0 w-full sm:w-1/3 bg-gray-50 flex items-center justify-center ">
           <img
             src={hospital.logo}
             alt={hospital.name}
-            className="h-20 sm:h-24 w-auto object-contain"
+            className="h-20 sm:h-full w-full object-contain"
           />
         </div>
 
