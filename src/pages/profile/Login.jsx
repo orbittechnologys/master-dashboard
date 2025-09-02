@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 // import logo from "./assets/logo/Logo.png";
-import logo from "../assets/logo/logo.png";
+import logo from "../../assets/logo/logo.png";
 
-import loginbg from "../assets/logo/loginbg.png";
+import loginbg from "../../assets/logo/loginbg.png";
 import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
