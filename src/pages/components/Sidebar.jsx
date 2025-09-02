@@ -58,7 +58,7 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-100">
       {/* Overlay for mobile */}
       <div
         className={`fixed inset-0 bg-black/50 transition-opacity duration-300 sm:hidden ${
@@ -209,7 +209,14 @@ const Sidebar = () => {
         </header>
 
         {/* Page Content */}
-        <div className="mt-14 md:mt-24 max-w-7xl mx-auto flex flex-col gap-5 ">
+        {/* <div className="pt-16 sm:pt-0">
+          <div className="">
+            <main>
+              <Outlet />
+            </main>
+          </div>
+        </div> */}
+        <div className=" max-w-7xl mx-auto flex flex-col gap-5 ">
           <h2 className="text-[10px] m-3 sm:hidden bg-primary py-1 rounded-sm text-center text-white animate-pulse text-nowrap">
             Please View in larger screen for better UI experiance
           </h2>

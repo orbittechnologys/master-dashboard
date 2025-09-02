@@ -6,6 +6,9 @@ import {
   IdCard,
   Network,
   Award,
+  Hospital,
+  CalendarDays,
+  Banknote,
 } from "lucide-react";
 import {
   AreaChart,
@@ -105,13 +108,13 @@ const Dashboard = () => {
       <h2 className="mb-5 text-gray-800 font-semibold text-xl">Dashboard</h2>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         <CustStatsCard
           title="Hospital Onboarded"
           count={56}
           //   linkText="View All Doctors"
           //   linkTo="/alldoctors"
-          icon={<FaUserDoctor />}
+          icon={<Hospital trokeWidth={1.25} />}
           iconColor="text-[#287FC4]"
           iconSize={32}
           iconBg="bg-[#287FC4]/20"
@@ -122,7 +125,7 @@ const Dashboard = () => {
           count={67}
           linkText="View All Appointments"
           linkTo="/allappointments"
-          icon={<ClipboardClock strokeWidth={1.25} />}
+          icon={<CalendarDays strokeWidth={1.25} />}
           iconColor="text-[#EE7526]"
           iconSize={32}
           iconBg="bg-[#EE7526]/20"
@@ -144,7 +147,7 @@ const Dashboard = () => {
           count={23}
           linkText="View All Appointments"
           linkTo="/allappointments"
-          icon={<ClipboardClock strokeWidth={1.25} />}
+          icon={<Banknote strokeWidth={1.25} />}
           iconColor="text-[#E5AD01]"
           iconSize={32}
           iconBg="bg-[#E5AD01]/20"
