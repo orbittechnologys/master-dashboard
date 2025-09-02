@@ -134,7 +134,7 @@ export default function Hospital() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen p-4 md:p-6 bg-gray-100 w-full mt-16">
+    <div className="flex flex-col min-h-screen p-4 md:p-6 bg-background w-full mt-16">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <h1 className="text-xl md:text-2xl font-bold text-gray-800">

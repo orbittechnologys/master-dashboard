@@ -31,7 +31,7 @@ const Sidebar = () => {
       { name: "Dashboard", icon: <Home size={20} />, path: "/dashboard" },
       { name: "Hospitals", icon: <Building2 size={20} />, path: "/hospital" },
       { name: "Patients", icon: <Users size={20} />, path: "/patient" },
-      { name: "Settings", icon: <Settings size={20} />, path: "/settings" },
+      //   { name: "Settings", icon: <Settings size={20} />, path: "/settings" },
     ],
     HOSPITAL_STAFF: [
       { name: "Dashboard", icon: <Home size={20} />, path: "/dashboard" },
@@ -58,7 +58,7 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-background">
       {/* Overlay for mobile */}
       <div
         className={`fixed inset-0 bg-black/50 transition-opacity duration-300 sm:hidden ${

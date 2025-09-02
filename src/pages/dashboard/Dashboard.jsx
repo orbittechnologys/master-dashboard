@@ -44,7 +44,7 @@ const CustStatsCard = ({
           {isCurrency ? `₹${count.toLocaleString()}` : count.toLocaleString()}
         </h3>
       </div>
-      <div className={`rounded-sm p-3 ${iconBg}`}>
+      <div className={`rounded-sm p-2 ${iconBg}`}>
         <span className={iconColor}>{icon}</span>
       </div>
     </div>
@@ -104,7 +104,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen mt-16">
+    <div className="p-6 bg-background min-h-screen mt-16">
       <h2 className="mb-5 text-gray-800 font-semibold text-xl">Dashboard</h2>
 
       {/* Stats Cards */}

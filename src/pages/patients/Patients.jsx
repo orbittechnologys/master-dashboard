@@ -192,7 +192,7 @@ export default function Patients() {
     },
   ];
   return (
-    <div className="p-6 bg-gray-100 min-h-screen mt-16">
+    <div className="p-6 bg-background min-h-screen mt-16">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">All Patients</h1>
       {/* Search Bar */}
       <div className="mb-4">
