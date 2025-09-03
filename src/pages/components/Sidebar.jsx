@@ -22,12 +22,12 @@ const Sidebar = () => {
   const dropdownRef = useRef(null);
 
   // Get user info from sessionStorage or use defaults
-  const userName = sessionStorage.getItem("userName") || "User Name";
-  const fetchedRole = sessionStorage.getItem("role") || "HOSPITAL_ADMIN";
+  const userName = sessionStorage.getItem("username") || "User Name";
+  const fetchedRole = sessionStorage.getItem("role") || "SUPER_ADMIN";
 
   // Navigation links based on user role
   const navLinks = {
-    HOSPITAL_ADMIN: [
+    SUPER_ADMIN: [
       { name: "Dashboard", icon: <Home size={20} />, path: "/dashboard" },
       { name: "Hospitals", icon: <Building2 size={20} />, path: "/hospital" },
       { name: "Patients", icon: <Users size={20} />, path: "/patient" },

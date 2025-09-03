@@ -38,7 +38,8 @@ const Login = () => {
         sessionStorage.setItem("authToken", response.data.data.token);
         sessionStorage.setItem("userData", JSON.stringify(response.data.data));
         sessionStorage.setItem("isAuthenticated", "true");
-
+        sessionStorage.setItem("username", response.data.data.name);
+        sessionStorage.setItem("userRole", response.data.data.role);
         toast.success("Login successful!");
 
         setTimeout(() => {

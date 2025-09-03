@@ -3,6 +3,7 @@ import Hospital from "./pages/hospitals/Hospital";
 import AddHospital from "./pages/hospitals/AddHospital";
 import Patients from "./pages/patients/Patients";
 import Settings from "./pages/Setting";
+import EditHospital from "./pages/hospitals/EditHospital";
 
 const AppRoutes = [
   {
@@ -29,6 +30,11 @@ const AppRoutes = [
     path: "/settings",
     element: <Settings />,
     title: "Settings",
+  },
+  {
+    path: "/edithospital",
+    element: <EditHospital />,
+    title: "Edit Hospital",
   },
 ];
 

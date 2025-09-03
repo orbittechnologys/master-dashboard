@@ -120,7 +120,7 @@ const Dashboard = () => {
           iconBg="bg-[#287FC4]/20"
         />
 
-        <CustStatsCard
+        {/* <CustStatsCard
           title="Total Appointments"
           count={67}
           linkText="View All Appointments"
@@ -151,7 +151,7 @@ const Dashboard = () => {
           iconColor="text-[#E5AD01]"
           iconSize={32}
           iconBg="bg-[#E5AD01]/20"
-        />
+        /> */}
       </div>
 
       {/* Charts Section */}
