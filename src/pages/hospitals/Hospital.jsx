@@ -17,6 +17,7 @@ import hssh from "../../assets/img/hssh.png";
 const hospitalsData = [
   {
     id: 1,
+
     name: "Manipal Hospital",
     address: "Old Airport Road, Hebbal, Varthur Road",
     city: "Bangalore",
