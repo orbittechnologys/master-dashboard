@@ -51,9 +51,9 @@ export default function Hospital() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const { data } = await makeApiRequest('https://care.uur.co.in:4035/api/hospital/fetchAll');
-      
+
       if (data.success) {
         setHospitals(data.data);
       } else {
@@ -78,11 +78,11 @@ export default function Hospital() {
     try {
       setSearchLoading(true);
       setError(null);
-      
+
       const { data } = await makeApiRequest('https://care.uur.co.in:4035/api/hospital/fetchByName', {
         q: query.trim()
       });
-      
+
       if (data.success) {
         setHospitals(data.data);
       } else {
@@ -177,9 +177,8 @@ export default function Hospital() {
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="relative flex-1">
           <Search
-            className={`absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 ${
-              searchLoading ? 'animate-pulse' : ''
-            }`}
+            className={`absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 ${searchLoading ? 'animate-pulse' : ''
+              }`}
             size={18}
           />
           <input
@@ -228,9 +227,9 @@ export default function Hospital() {
                   src={hospital.logo}
                   // alt={hospital.name}
                   className="h-40 w-full object-contain rounded-md"
-                  // onError={(e) => {
-                  //   e.target.src = '/placeholder-hospital.png';
-                  // }}
+                // onError={(e) => {
+                //   e.target.src = '/placeholder-hospital.png';
+                // }}
                 />
               </div>
 
@@ -268,47 +267,47 @@ export default function Hospital() {
               </CardContent>
 
               {/* Action Buttons */}
-            <CardFooter className="mt-auto grid grid-cols-2 xl:grid-cols-4 gap-2">
-  {/* Call Button */}
-  <button
-    onClick={() => {
-      /* Add phone call functionality */
-    }}
-    className="flex items-center gap-1 px-2 py-1.5 bg-[#4db6ac] text-white rounded-lg text-xs hover:bg-[#399d94] transition flex-1 justify-center"
-  >
-    <Phone size={14} /> Call
-  </button>
+              <CardFooter className="mt-auto grid grid-cols-2 xl:grid-cols-4 gap-2">
+                {/* Call Button */}
+                <button
+                  onClick={() => {
+                    /* Add phone call functionality */
+                  }}
+                  className="flex items-center gap-1 px-2 py-1.5 bg-[#4db6ac] text-white rounded-lg text-xs hover:bg-[#399d94] transition flex-1 justify-center"
+                >
+                  <Phone size={14} /> Call
+                </button>
 
-  {/* Email Button */}
-  <button
-    onClick={() => {
-      /* Add email functionality */
-    }}
-    className="flex items-center gap-1 px-2 py-1.5 border border-gray-300 rounded-lg text-xs hover:bg-gray-50 transition flex-1 justify-center"
-  >
-    <Mail size={14} /> Email
-  </button>
+                {/* Email Button */}
+                <button
+                  onClick={() => {
+                    /* Add email functionality */
+                  }}
+                  className="flex items-center gap-1 px-2 py-1.5 border border-gray-300 rounded-lg text-xs hover:bg-gray-50 transition flex-1 justify-center"
+                >
+                  <Mail size={14} /> Email
+                </button>
 
-  {/* Edit Button */}
-  <button
-    onClick={() => {
-      /* Add edit functionality */
-    }}
-    className="flex items-center gap-1 px-2 py-1.5 bg-blue-500 text-white rounded-lg text-xs hover:bg-blue-600 transition flex-1 justify-center"
-  >
-    <Edit size={14} /> Edit
-  </button>
+                {/* Edit Button */}
+                <button
+                  onClick={() => {
+                    /* Add edit functionality */
+                  }}
+                  className="flex items-center gap-1 px-2 py-1.5 bg-blue-500 text-white rounded-lg text-xs hover:bg-blue-600 transition flex-1 justify-center"
+                >
+                  <Edit size={14} /> Edit
+                </button>
 
-  {/* Suspend Button */}
-  <button
-    onClick={() => {
-      /* Add suspend functionality */
-    }}
-    className="flex items-center gap-1 px-2 py-1.5 bg-red-500 text-white rounded-lg text-xs hover:bg-red-600 transition flex-1 justify-center"
-  >
-    <Slash size={14} /> Suspend
-  </button>
-</CardFooter>
+                {/* Suspend Button */}
+                <button
+                  onClick={() => {
+                    /* Add suspend functionality */
+                  }}
+                  className="flex items-center gap-1 px-2 py-1.5 bg-red-500 text-white rounded-lg text-xs hover:bg-red-600 transition flex-1 justify-center"
+                >
+                  <Slash size={14} /> Suspend
+                </button>
+              </CardFooter>
 
             </Card>
           ))
@@ -321,7 +320,7 @@ export default function Hospital() {
           </div>
         ) : (
           <div className="col-span-full text-center py-8 text-gray-500">
-            {searchTerm ? 
+            {searchTerm ?
               `No hospitals found matching "${searchTerm}"${selectedCity !== "All" && selectedCity ? ` in ${selectedCity}` : ''}.` :
               'No hospitals found matching your criteria.'
             }
