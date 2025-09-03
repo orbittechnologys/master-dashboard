@@ -1,5 +1,8 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { FaUserDoctor } from "react-icons/fa6";
+
 import {
   BadgeIndianRupee,
   ClipboardClock,
@@ -29,8 +32,6 @@ import {
 const CustStatsCard = ({
   title,
   count,
-  linkText,
-  linkTo,
   icon,
   iconColor,
   iconBg,
@@ -84,24 +85,53 @@ const Dashboard = () => {
   ];
 
   const COLORS = ["#4DB6AC", "#64B5F6", "#EF4256"];
+  const token = sessionStorage.getItem("authToken");
 
+  const [hospitalCount, setHospitalCount] = useState(0);
+
+
+useEffect(() => {
+  const fetchHospitalData = async () => {
+    try {
+      const response = await axios.get(
+        "https://care.uur.co.in:4035/api/hospital/fetchAll",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setHospitalCount(response.data.pagination.total);
+      }
+
+      console.log("Hospital data:", response.data);
+    } catch (error) {
+      console.error("Error fetching hospital data:", error);
+    }
+  };
+
+  fetchHospitalData();
+}, [token]);
   // Table data
-  const columns = [
-    { key: "name", label: "Doctor Name" },
-    { key: "qualification", label: "Qualification", className: "text-center" },
-    { key: "department", label: "Department" },
-    {
-      key: "totalAppointments",
-      label: "Total Appointment",
-      className: "text-center",
-    },
-    { key: "joiningDate", label: "Joining Date", className: "text-center" },
-    {
-      key: "yearsinPractice",
-      label: "Years in Practice",
-      className: "text-center",
-    },
-  ];
+  // const columns = [
+  //   { key: "name", label: "Doctor Name" },
+  //   { key: "qualification", label: "Qualification", className: "text-center" },
+  //   { key: "department", label: "Department" },
+  //   {
+  //     key: "totalAppointments",
+  //     label: "Total Appointment",
+  //     className: "text-center",
+  //   },
+  //   { key: "joiningDate", label: "Joining Date", className: "text-center" },
+  //   {
+  //     key: "yearsinPractice",
+  //     label: "Years in Practice",
+  //     className: "text-center",
+  //   },
+  // ];
 
   return (
     <div className="p-6 bg-background min-h-screen mt-16">
@@ -111,7 +141,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         <CustStatsCard
           title="Hospital Onboarded"
-          count={56}
+          count={hospitalCount} 
           //   linkText="View All Doctors"
           //   linkTo="/alldoctors"
           icon={<Hospital trokeWidth={1.25} />}

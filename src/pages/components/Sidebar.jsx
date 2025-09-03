@@ -220,7 +220,7 @@ const Sidebar = () => {
           <h2 className="text-[10px] m-3 sm:hidden bg-primary py-1 rounded-sm text-center text-white animate-pulse text-nowrap">
             Please View in larger screen for better UI experiance
           </h2>
-          <div className="px-8">
+          <div className="">
             <Outlet />
           </div>
         </div>

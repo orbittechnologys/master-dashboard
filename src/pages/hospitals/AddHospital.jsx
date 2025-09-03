@@ -62,6 +62,7 @@ export default function AddHospital() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
   };
 
   const handleFileChange = (e) => {

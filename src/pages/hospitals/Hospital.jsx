@@ -194,7 +194,7 @@ export default function Hospital() {
 
               {/* Hospital Info */}
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-lg line-clamp-1 font-semibold text-gray-800 mb-2">
                   {hospital.name}
                 </h3>
 
