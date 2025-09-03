@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Search, Phone, Mail, Plus } from "lucide-react";
+import { Search, Phone, Mail, Plus, Edit, Slash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -102,7 +102,7 @@ export default function Hospital() {
   const debouncedSearch = useCallback(
     debounce((query) => {
       searchHospitalsByName(query);
-    }, 3000),
+    }, 500),
     []
   );
 
@@ -226,11 +226,11 @@ export default function Hospital() {
               <div className="bg-gray-50 flex items-center justify-center">
                 <img
                   src={hospital.logo}
-                  alt={hospital.name}
+                  // alt={hospital.name}
                   className="h-40 w-full object-contain rounded-md"
-                  onError={(e) => {
-                    e.target.src = '/placeholder-hospital.png';
-                  }}
+                  // onError={(e) => {
+                  //   e.target.src = '/placeholder-hospital.png';
+                  // }}
                 />
               </div>
 
@@ -268,20 +268,48 @@ export default function Hospital() {
               </CardContent>
 
               {/* Action Buttons */}
-              <CardFooter className="mt-auto">
-                <button
-                  onClick={() => {/* Add phone call functionality */}}
-                  className="flex items-center gap-1 px-3 py-2 bg-[#4db6ac] text-white rounded-lg text-sm hover:bg-[#399d94] transition flex-1 justify-center"
-                >
-                  <Phone size={14} /> Call
-                </button>
-                <button
-                  onClick={() => {/* Add email functionality */}}
-                  className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition flex-1 justify-center"
-                >
-                  <Mail size={14} /> Email
-                </button>
-              </CardFooter>
+            <CardFooter className="mt-auto grid grid-cols-2 xl:grid-cols-4 gap-2">
+  {/* Call Button */}
+  <button
+    onClick={() => {
+      /* Add phone call functionality */
+    }}
+    className="flex items-center gap-1 px-2 py-1.5 bg-[#4db6ac] text-white rounded-lg text-xs hover:bg-[#399d94] transition flex-1 justify-center"
+  >
+    <Phone size={14} /> Call
+  </button>
+
+  {/* Email Button */}
+  <button
+    onClick={() => {
+      /* Add email functionality */
+    }}
+    className="flex items-center gap-1 px-2 py-1.5 border border-gray-300 rounded-lg text-xs hover:bg-gray-50 transition flex-1 justify-center"
+  >
+    <Mail size={14} /> Email
+  </button>
+
+  {/* Edit Button */}
+  <button
+    onClick={() => {
+      /* Add edit functionality */
+    }}
+    className="flex items-center gap-1 px-2 py-1.5 bg-blue-500 text-white rounded-lg text-xs hover:bg-blue-600 transition flex-1 justify-center"
+  >
+    <Edit size={14} /> Edit
+  </button>
+
+  {/* Suspend Button */}
+  <button
+    onClick={() => {
+      /* Add suspend functionality */
+    }}
+    className="flex items-center gap-1 px-2 py-1.5 bg-red-500 text-white rounded-lg text-xs hover:bg-red-600 transition flex-1 justify-center"
+  >
+    <Slash size={14} /> Suspend
+  </button>
+</CardFooter>
+
             </Card>
           ))
         ) : searchLoading ? (
