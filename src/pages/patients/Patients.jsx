@@ -1,175 +1,89 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, X } from "lucide-react";
+import axios from "axios";
 import loading from "../../assets/lottie-json/Loading.json";
 import Lottie from "lottie-react";
 import CustTable from "../components/CustTable";
+
 export default function Patients() {
   const [search, setSearch] = useState("");
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [patients, setPatients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const lottieRef = useRef();
+
   useEffect(() => {
     if (lottieRef.current) {
       lottieRef.current.setSpeed(0.5); // Half the normal speed
     }
   }, []);
-  // Dummy Patients Data
-  const patients = [
-    {
-      opid: "OP001",
-      name: "Amit Sharma",
-      age: 42,
-      gender: "Male",
-      phone: "9876543210",
-      lastVisit: "2025-07-15",
-      phi: "Diabetes",
-      totalAppts: 8,
-    },
-    {
-      opid: "OP002",
-      name: "Priya Iyer",
-      age: 29,
-      gender: "Female",
-      phone: "9123456780",
-      lastVisit: "2025-06-28",
-      phi: "Fever",
-      totalAppts: 3,
-    },
-    {
-      opid: "OP003",
-      name: "Rohit Verma",
-      age: 35,
-      gender: "Male",
-      phone: "9812345678",
-      lastVisit: "2025-05-20",
-      phi: "Hypertension",
-      totalAppts: 5,
-    },
-    {
-      opid: "OP004",
-      name: "Sneha Reddy",
-      age: 26,
-      gender: "Female",
-      phone: "9988776655",
-      lastVisit: "2025-07-02",
-      phi: "Viral Infection",
-      totalAppts: 2,
-    },
-    {
-      opid: "OP005",
-      name: "Arjun Nair",
-      age: 40,
-      gender: "Male",
-      phone: "9876123450",
-      lastVisit: "2025-06-10",
-      phi: "Asthma",
-      totalAppts: 7,
-    },
-    {
-      opid: "OP006",
-      name: "Meera Gupta",
-      age: 33,
-      gender: "Female",
-      phone: "9765432109",
-      lastVisit: "2025-05-29",
-      phi: "Thyroid",
-      totalAppts: 4,
-    },
-    {
-      opid: "OP007",
-      name: "Karan Singh",
-      age: 37,
-      gender: "Male",
-      phone: "9823456712",
-      lastVisit: "2025-07-05",
-      phi: "Fever",
-      totalAppts: 6,
-    },
-    {
-      opid: "OP008",
-      name: "Neha Menon",
-      age: 31,
-      gender: "Female",
-      phone: "9898765432",
-      lastVisit: "2025-06-15",
-      phi: "Migraine",
-      totalAppts: 3,
-    },
-    {
-      opid: "OP009",
-      name: "Vikram Patil",
-      age: 45,
-      gender: "Male",
-      phone: "9753124680",
-      lastVisit: "2025-07-08",
-      phi: "Diabetes",
-      totalAppts: 9,
-    },
-    {
-      opid: "OP010",
-      name: "Ritu Kapoor",
-      age: 28,
-      gender: "Female",
-      phone: "9811112233",
-      lastVisit: "2025-07-01",
-      phi: "Fever",
-      totalAppts: 2,
-    },
-    {
-      opid: "OP011",
-      name: "Anil Joshi",
-      age: 50,
-      gender: "Male",
-      phone: "9722223344",
-      lastVisit: "2025-05-18",
-      phi: "Heart Disease",
-      totalAppts: 10,
-    },
-    {
-      opid: "OP012",
-      name: "Pooja Desai",
-      age: 34,
-      gender: "Female",
-      phone: "9844556677",
-      lastVisit: "2025-06-12",
-      phi: "Thyroid",
-      totalAppts: 5,
-    },
-    {
-      opid: "OP013",
-      name: "Suresh Kumar",
-      age: 39,
-      gender: "Male",
-      phone: "9812349876",
-      lastVisit: "2025-07-06",
-      phi: "Viral Infection",
-      totalAppts: 4,
-    },
-    {
-      opid: "OP014",
-      name: "Lakshmi Pillai",
-      age: 41,
-      gender: "Female",
-      phone: "9878901234",
-      lastVisit: "2025-06-09",
-      phi: "Arthritis",
-      totalAppts: 6,
-    },
-    {
-      opid: "OP015",
-      name: "Rahul Chawla",
-      age: 36,
-      gender: "Male",
-      phone: "9765123489",
-      lastVisit: "2025-07-10",
-      phi: "Asthma",
-      totalAppts: 3,
-    },
-  ];
+
+  // Fetch patients data from API
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Get token from sessionStorage
+        const token = sessionStorage.getItem("authToken");
+        
+        if (!token) {
+          setError("Authentication token not found. Please login again.");
+          return;
+        }
+
+        const response = await axios.get("https://care.uur.co.in:4035/api/patient/fetchAll", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (response.data.success) {
+          // Transform API data to match the table format
+          const transformedData = response.data.data.map(patient => ({
+            id: patient.id,
+            opid: patient.OPID,
+            name: `${patient.firstName} ${patient.lastName}`,
+            age: patient.age,
+            gender: patient.gender,
+            phone: patient.emergencyContact?.phone || "N/A",
+            lastVisit: "N/A", // Not provided in API response
+            phi: "N/A", // Not provided in API response
+            totalAppts: "N/A", // Not provided in API response
+            // Keep original data for detailed view
+            originalData: patient
+          }));
+          setPatients(transformedData);
+        } else {
+          setError("Failed to fetch patients data");
+        }
+      } catch (err) {
+        // Handle authentication errors specifically
+        if (err.response?.status === 401) {
+          setError("Authentication failed. Please login again.");
+          // Optionally redirect to login
+          // navigate("/login");
+        } else {
+          setError(err.response?.data?.message || err.response?.data?.msg || "Error fetching patients data");
+        }
+        console.error("Error fetching patients:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPatients();
+  }, []);
+
   const filteredPatients = patients.filter((p) =>
     Object.values(p).some((val) =>
       String(val).toLowerCase().includes(search.toLowerCase())
     )
   );
+
   // Define table columns
   const columns = [
     { key: "opid", label: "OPID" },
@@ -181,6 +95,7 @@ export default function Patients() {
     { key: "phi", label: "PHI" },
     { key: "totalAppts", label: "Total Appts" },
   ];
+
   // Define table actions
   const actions = [
     {
@@ -191,9 +106,45 @@ export default function Patients() {
       onClick: (patient) => setSelectedPatient(patient),
     },
   ];
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-background min-h-screen mt-16 flex items-center justify-center">
+        <div className="text-center">
+          <Lottie
+            animationData={loading}
+            loop
+            autoplay
+            style={{ width: "200px", height: "200px" }}
+          />
+          <p className="text-gray-600 mt-4">Loading patients...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="p-6 bg-background min-h-screen mt-16 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 text-lg mb-4">Error: {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-[#4DB6AC] text-white px-4 py-2 rounded-lg hover:bg-[#399D94]"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 bg-background min-h-screen mt-16">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">All Patients</h1>
+      
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -204,15 +155,23 @@ export default function Patients() {
           className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4DB6AC] outline-none"
         />
       </div>
+
       {/* Table using CustTable */}
       <div className="rounded-lg overflow-hidden">
-        <CustTable
-          columns={columns}
-          data={filteredPatients}
-          actions={actions}
-          rowsPerPage={10}
-        />
+        {patients.length === 0 ? (
+          <div className="text-center py-8 text-gray-600">
+            No patients found.
+          </div>
+        ) : (
+          <CustTable
+            columns={columns}
+            data={filteredPatients}
+            actions={actions}
+            rowsPerPage={10}
+          />
+        )}
       </div>
+
       {/* Popup */}
       {selectedPatient && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -229,6 +188,17 @@ export default function Patients() {
             <h2 className="text-lg font-semibold mb-2">
               {selectedPatient.name}
             </h2>
+            
+            {/* Display additional patient info if available */}
+            {selectedPatient.originalData && (
+              <div className="mb-4 text-sm text-gray-600">
+                <p><strong>Blood Group:</strong> {selectedPatient.originalData.bloodGroup}</p>
+                <p><strong>DOB:</strong> {new Date(selectedPatient.originalData.DOB).toLocaleDateString()}</p>
+                <p><strong>Address:</strong> {selectedPatient.originalData.address?.city}, {selectedPatient.originalData.address?.state}</p>
+                <p><strong>Emergency Contact:</strong> {selectedPatient.originalData.emergencyContact?.name} ({selectedPatient.originalData.emergencyContact?.relation})</p>
+              </div>
+            )}
+            
             <Lottie
               lottieRef={lottieRef}
               animationData={loading}
