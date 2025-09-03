@@ -34,14 +34,12 @@ const Login = () => {
         formData
       );
 
-      // Store the token in sessionStorage
-      if (response.data.token) {
-        sessionStorage.setItem("authToken", response.data.token);
-        // You might also want to store user data if needed
-        sessionStorage.setItem("userData", JSON.stringify(response.data.user));
+      if (response.data.success && response.data.data.token) {
+        sessionStorage.setItem("authToken", response.data.data.token);
+        sessionStorage.setItem("userData", JSON.stringify(response.data.data));
+        sessionStorage.setItem("isAuthenticated", "true");
 
-        // Show success toast
-        toast.success("Login successful! Redirecting to dashboard...");
+        toast.success("Login successful!");
 
         setTimeout(() => {
           navigate("/dashboard");
@@ -52,7 +50,6 @@ const Login = () => {
         err.response?.data?.message ||
         "Login failed. Please check your credentials and try again.";
 
-      // Show error toast
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -74,7 +71,7 @@ const Login = () => {
         theme="light"
       />
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-t from-cyan-50 to-cyan-100 p-6">
-        <div className="flex w-full max-w-3xl overflow-hidden  border border-gray-200 shadow-lg">
+        <div className="flex w-full max-w-3xl overflow-hidden border border-gray-200 shadow-lg">
           {/* Left side with overlay */}
           <div className="relative hidden md:block w-1/2">
             <img
@@ -85,7 +82,7 @@ const Login = () => {
             {/* Overlay */}
             <div className="absolute inset-0 bg-[#2FAAA1] opacity-70"></div>
             {/* Logo + text */}
-            <div className="absolute inset-0 flex  items-center justify-center text-white">
+            <div className="absolute inset-0 flex items-center justify-center text-white">
               <img
                 src={logo}
                 alt="Orbit Care Logo"
