@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import logo from "../../assets/logo/mainLogo.png";
 import loginbg from "../../assets/logo/loginbg.png";
 import { Eye, EyeOff } from "lucide-react";
+import { BASE_URL } from "../../constants";
+
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   return (
