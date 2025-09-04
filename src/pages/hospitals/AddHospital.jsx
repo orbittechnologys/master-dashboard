@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { PlusCircle, X, Upload } from "lucide-react";
 import axios from "axios";
 import uploadToAzureStorage from "../../utils/UploadToAzureStorage";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function AddHospital() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     logo: null,
@@ -17,6 +20,8 @@ export default function AddHospital() {
     pocPhone: "",
     pocEmail: "",
     consultationFee: "",
+    latitude: "",
+    longitude: "",
   });
   const [departmentsList, setDepartmentsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -62,7 +67,7 @@ export default function AddHospital() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
+    // setError((prev) => ({ ...prev, [name]: "" })); // clear error on change
   };
 
   const handleFileChange = (e) => {
@@ -103,7 +108,6 @@ export default function AddHospital() {
         !form.pocName ||
         !form.pocPhone ||
         !form.pocEmail ||
-        !form.consultationFee ||
         form.departments.length === 0
       ) {
         throw new Error("Please fill all required fields");
@@ -132,6 +136,10 @@ export default function AddHospital() {
             city: form.city,
             state: form.state,
           },
+          location: {
+            latitude: form.latitude,
+            longitude: form.longitude,
+          },
         },
         admin: {
           username: form.pocName,
@@ -139,7 +147,7 @@ export default function AddHospital() {
           phone: form.pocPhone,
           profileImg: "",
         },
-        consultationFee: parseInt(form.consultationFee) || 0,
+        consultationFee: 0,
         departments: form.departments,
       };
 
@@ -172,10 +180,15 @@ export default function AddHospital() {
           pocEmail: "",
           consultationFee: "",
         });
+        toast.success("Hospital added successfully!");
+        navigate("/hospitals");
       } else {
+        console.log("API Error:", response.data);
         setError(response.data.message || "Failed to add hospital");
+        toast.error(response.data.message || "Failed to add hospital");
       }
     } catch (err) {
+      toast.error("Failed to add hospital");
       if (err.response?.status === 401) {
         setError("Authentication failed. Please login again.");
       } else {
@@ -273,22 +286,6 @@ export default function AddHospital() {
           />
         </div>
 
-        {/* Consultation Fee */}
-        <div>
-          <label className="block mb-1 font-medium">
-            Consultation Fee (₹) *
-          </label>
-          <input
-            type="number"
-            name="consultationFee"
-            value={form.consultationFee}
-            onChange={handleChange}
-            required
-            min="0"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4DB6AC] outline-none"
-          />
-        </div>
-
         {/* Departments Multi Select */}
         <div className="md:col-span-2">
           <label className="block mb-2 font-medium">Departments *</label>
@@ -355,6 +352,30 @@ export default function AddHospital() {
             type="text"
             name="pincode"
             value={form.pincode}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4DB6AC] outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-medium">Latitude *</label>
+          <input
+            type="text"
+            name="latitude"
+            value={form.latitude}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4DB6AC] outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-medium">Longitude *</label>
+          <input
+            type="text"
+            name="longitude"
+            value={form.longitude}
             onChange={handleChange}
             required
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4DB6AC] outline-none"

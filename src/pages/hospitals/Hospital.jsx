@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Search, Phone, Mail, Plus, Edit, Slash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { formatDate } from "../../constants";
 
 export default function Hospital() {
   const navigate = useNavigate();
@@ -221,9 +222,9 @@ export default function Hospital() {
                     </span>
                   </p>
                   <p>
-                    Doctors:{" "}
+                    Onboarding Date:{" "}
                     <span className="font-medium">
-                      {hospital.noOfDoctors || "N/A"}
+                      {formatDate(hospital.createdAt) || "N/A"}
                     </span>
                   </p>
                   <p>

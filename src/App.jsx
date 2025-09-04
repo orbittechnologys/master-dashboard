@@ -3,29 +3,44 @@ import Sidebar from "./pages/components/Sidebar";
 import AppRoutes from "./Routes";
 import Login from "./pages/profile/Login";
 import ProtectedRoute from "./pages/ProtectedRoutes";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Public route */}
-        <Route path="/" element={<Login />} />
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Router>
+        <Routes>
+          {/* Public route */}
+          <Route path="/" element={<Login />} />
 
-        {/* Protected routes with Sidebar layout */}
-        <Route element={<Sidebar />}>
-          {AppRoutes?.map(({ path, element }, index) => (
-            <Route
-              key={index}
-              path={path}
-              element={<ProtectedRoute element={element} />}
-            />
-          ))}
-        </Route>
+          {/* Protected routes with Sidebar layout */}
+          <Route element={<Sidebar />}>
+            {AppRoutes?.map(({ path, element }, index) => (
+              <Route
+                key={index}
+                path={path}
+                element={<ProtectedRoute element={element} />}
+              />
+            ))}
+          </Route>
 
-        {/* Fallback for undefined routes */}
-        <Route path="*" element={<h2>❌ Page Not Found</h2>} />
-      </Routes>
-    </Router>
+          {/* Fallback for undefined routes */}
+          <Route path="*" element={<h2>❌ Page Not Found</h2>} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
