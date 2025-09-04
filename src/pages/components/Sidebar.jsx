@@ -30,7 +30,7 @@ const Sidebar = () => {
     SUPER_ADMIN: [
       { name: "Dashboard", icon: <Home size={20} />, path: "/dashboard" },
       { name: "Hospitals", icon: <Building2 size={20} />, path: "/hospital" },
-      { name: "Patients", icon: <Users size={20} />, path: "/patient" },
+      // { name: "Patients", icon: <Users size={20} />, path: "/patient" },
       //   { name: "Settings", icon: <Settings size={20} />, path: "/settings" },
     ],
     HOSPITAL_STAFF: [

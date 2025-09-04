@@ -84,12 +84,8 @@ const Login = () => {
             <div className="absolute inset-0 bg-[#2FAAA1] opacity-70"></div>
             {/* Logo + text */}
             <div className="absolute inset-0 flex items-center justify-center text-white">
-              <img
-                src={logo}
-                alt="Orbit Care Logo"
-                className="w-10 h-10 mx-2"
-              />
-              <h1 className="text-2xl font-bold">Orbit Care</h1>
+              <img src={logo} alt="Orbit Care Logo" className="w-32 h-9 mx-2" />
+              {/* <h1 className="text-2xl font-bold">Orbit Care</h1> */}
             </div>
           </div>
           {/* Right side form */}
