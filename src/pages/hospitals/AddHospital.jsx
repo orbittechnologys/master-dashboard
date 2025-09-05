@@ -38,7 +38,7 @@ export default function AddHospital() {
     const fetchDepartments = async () => {
       try {
         const response = await axios.get(
-          `${BASE_URL}department/getAll`,
+          `${BASE_URL}/department/getAll`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -154,7 +154,7 @@ export default function AddHospital() {
 
       // Make API call using Axios with authentication
       const response = await axios.post(
-        `${BASE_URL}hospital/add`,
+        `${BASE_URL}/hospital/add`,
         requestBody,
         {
           headers: {

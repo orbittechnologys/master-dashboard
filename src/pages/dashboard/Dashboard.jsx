@@ -95,7 +95,7 @@ useEffect(() => {
   const fetchHospitalData = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}hospital/fetchAll`,
+        `${BASE_URL}/hospital/fetchAll`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

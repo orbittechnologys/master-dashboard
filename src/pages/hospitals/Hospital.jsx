@@ -26,7 +26,7 @@ export default function Hospital() {
 
       const token = getAuthToken();
       const response = await axios.get(
-        `${BASE_URL}hospital/fetchAll`,
+        `${BASE_URL}/hospital/fetchAll`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ export default function Hospital() {
 
       const token = getAuthToken();
       const response = await axios.get(
-        `${BASE_URL}hospital/fetchByName`,
+        `${BASE_URL}/hospital/fetchByName`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

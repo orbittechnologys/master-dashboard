@@ -35,7 +35,7 @@ export default function Patients() {
           return;
         }
 
-        const response = await axios.get(`${BASE_URL}patient/fetchAll`, {
+        const response = await axios.get(`${BASE_URL}/patient/fetchAll`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
