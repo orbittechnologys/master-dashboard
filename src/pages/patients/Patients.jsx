@@ -4,6 +4,7 @@ import axios from "axios";
 import loading from "../../assets/lottie-json/Loading.json";
 import Lottie from "lottie-react";
 import CustTable from "../components/CustTable";
+import { BASE_URL } from "../../constants";
 
 export default function Patients() {
   const [search, setSearch] = useState("");
@@ -34,7 +35,7 @@ export default function Patients() {
           return;
         }
 
-        const response = await axios.get("https://care.uur.co.in:4035/api/patient/fetchAll", {
+        const response = await axios.get(`${BASE_URL}patient/fetchAll`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

@@ -28,6 +28,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { BASE_URL } from "../../constants";
 
 const CustStatsCard = ({
   title,
@@ -94,7 +95,7 @@ useEffect(() => {
   const fetchHospitalData = async () => {
     try {
       const response = await axios.get(
-        "https://care.uur.co.in:4035/api/hospital/fetchAll",
+        `${BASE_URL}hospital/fetchAll`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

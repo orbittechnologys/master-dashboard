@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Search, Phone, Mail, Plus, Edit, Slash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { formatDate } from "../../constants";
+import { BASE_URL, formatDate } from "../../constants";
 
 export default function Hospital() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function Hospital() {
 
       const token = getAuthToken();
       const response = await axios.get(
-        "https://care.uur.co.in:4035/api/hospital/fetchAll",
+        `${BASE_URL}hospital/fetchAll`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ export default function Hospital() {
 
       const token = getAuthToken();
       const response = await axios.get(
-        "https://care.uur.co.in:4035/api/hospital/fetchByName",
+        `${BASE_URL}hospital/fetchByName`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

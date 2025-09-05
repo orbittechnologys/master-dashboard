@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import logo from "../../assets/logo/mainLogo.png";
 import loginbg from "../../assets/logo/loginbg.png";
 import { Eye, EyeOff } from "lucide-react";
+import { BASE_URL } from "../../constants";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +31,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://care.uur.co.in:4035/api/user/login",
+        `${BASE_URL}user/login`,
         formData
       );
 

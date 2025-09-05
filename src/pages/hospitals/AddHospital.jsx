@@ -4,6 +4,7 @@ import axios from "axios";
 import uploadToAzureStorage from "../../utils/UploadToAzureStorage";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../constants";
 
 export default function AddHospital() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function AddHospital() {
     const fetchDepartments = async () => {
       try {
         const response = await axios.get(
-          "https://care.uur.co.in:4035/api/department/getAll",
+          `${BASE_URL}department/getAll`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -153,7 +154,7 @@ export default function AddHospital() {
 
       // Make API call using Axios with authentication
       const response = await axios.post(
-        "https://care.uur.co.in:4035/api/hospital/add",
+        `${BASE_URL}hospital/add`,
         requestBody,
         {
           headers: {
