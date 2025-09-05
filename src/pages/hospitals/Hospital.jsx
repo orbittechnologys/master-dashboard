@@ -25,14 +25,12 @@ export default function Hospital() {
       setError(null);
 
       const token = getAuthToken();
-      const response = await axios.get(
-        `${BASE_URL}/hospital/fetchAll`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/hospital/fetchAll`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("response.data", response.data);
 
       if (response.data.success) {
         setHospitals(response.data.data);
@@ -59,17 +57,14 @@ export default function Hospital() {
       setError(null);
 
       const token = getAuthToken();
-      const response = await axios.get(
-        `${BASE_URL}/hospital/fetchByName`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            q: query.trim(),
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/hospital/fetchByName`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          q: query.trim(),
+        },
+      });
 
       if (response.data.success) {
         setHospitals(response.data.data);
@@ -241,13 +236,20 @@ export default function Hospital() {
               </div>
 
               {/* Action Buttons */}
+              {/* todo: add actual phone and email  */}
               <div className="p-4 bg-gray-50 grid grid-cols-2 gap-2">
-                <button className="flex items-center justify-center gap-1 px-2 py-1.5 bg-[#4db6ac] text-white rounded text-xs hover:bg-[#399d94]">
-                  <Phone size={14} /> Call
-                </button>
-                <button className="flex items-center justify-center gap-1 px-2 py-1.5 border border-gray-300 rounded text-xs hover:bg-gray-100">
-                  <Mail size={14} /> Email
-                </button>
+                <a href="tel:+911234567890" className="w-full"> 
+                  <button className="flex items-center w-full justify-center gap-1 px-2 py-1.5 bg-[#4db6ac] text-white rounded text-xs hover:bg-[#399d94]">
+                    <Phone size={14} /> Call
+                  </button>
+                </a>
+
+                <a href="mailto:example@email.com" className="w-full"> 
+                  <button className="flex items-center w-full justify-center gap-1 px-2 py-1.5 border border-gray-300 rounded text-xs hover:bg-gray-100">
+                    <Mail size={14} /> Email
+                  </button>
+                </a>
+
                 <button className="flex items-center justify-center gap-1 px-2 py-1.5 bg-blue-500 text-white rounded text-xs hover:bg-blue-600">
                   <Edit size={14} /> Edit
                 </button>
