@@ -32,7 +32,7 @@ const AppRoutes = [
     title: "Settings",
   },
   {
-    path: "/edithospital",
+    path: "/edithospital/:id",
     element: <EditHospital />,
     title: "Edit Hospital",
   },

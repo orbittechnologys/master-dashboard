@@ -37,14 +37,11 @@ export default function AddHospital() {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/department/getAll`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${BASE_URL}/department/getAll`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.data.success) {
           setDepartmentsList(response.data.data);
         }
@@ -182,7 +179,7 @@ export default function AddHospital() {
           consultationFee: "",
         });
         toast.success("Hospital added successfully!");
-        navigate("/hospitals");
+        navigate("/hospital");
       } else {
         console.log("API Error:", response.data);
         setError(response.data.message || "Failed to add hospital");

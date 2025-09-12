@@ -19,6 +19,7 @@ export default function Hospital() {
   };
 
   // Fetch all hospitals
+  // In your fetchAllHospitals function, check the response structure:
   const fetchAllHospitals = async () => {
     try {
       setLoading(true);
@@ -30,10 +31,17 @@ export default function Hospital() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("response.data", response.data);
+      console.log("Fetch all hospitals response:", response.data);
 
       if (response.data.success) {
         setHospitals(response.data.data);
+        // Check what properties the hospitals have
+        if (response.data.data.length > 0) {
+          console.log(
+            "First hospital properties:",
+            Object.keys(response.data.data[0])
+          );
+        }
       } else {
         setError("Failed to fetch hospitals");
       }
@@ -238,19 +246,25 @@ export default function Hospital() {
               {/* Action Buttons */}
               {/* todo: add actual phone and email  */}
               <div className="p-4 bg-gray-50 grid grid-cols-2 gap-2">
-                <a href="tel:+911234567890" className="w-full"> 
+                <a href="tel:+911234567890" className="w-full">
                   <button className="flex items-center w-full justify-center gap-1 px-2 py-1.5 bg-[#4db6ac] text-white rounded text-xs hover:bg-[#399d94]">
                     <Phone size={14} /> Call
                   </button>
                 </a>
 
-                <a href="mailto:example@email.com" className="w-full"> 
+                <a href="mailto:example@email.com" className="w-full">
                   <button className="flex items-center w-full justify-center gap-1 px-2 py-1.5 border border-gray-300 rounded text-xs hover:bg-gray-100">
                     <Mail size={14} /> Email
                   </button>
                 </a>
 
-                <button className="flex items-center justify-center gap-1 px-2 py-1.5 bg-blue-500 text-white rounded text-xs hover:bg-blue-600">
+                <button
+                  onClick={() => {
+                    console.log("Hospital ID to edit:", hospital.id); // Use hospital.id
+                    navigate(`/edithospital/${hospital.id}`);
+                  }}
+                  className="flex items-center justify-center gap-1 px-2 py-1.5 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+                >
                   <Edit size={14} /> Edit
                 </button>
                 <button className="flex items-center justify-center gap-1 px-2 py-1.5 bg-red-500 text-white rounded text-xs hover:bg-red-600">

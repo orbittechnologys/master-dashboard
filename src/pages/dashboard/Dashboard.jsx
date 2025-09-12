@@ -90,32 +90,28 @@ const Dashboard = () => {
 
   const [hospitalCount, setHospitalCount] = useState(0);
 
-
-useEffect(() => {
-  const fetchHospitalData = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/hospital/fetchAll`,
-        {
+  useEffect(() => {
+    const fetchHospitalData = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/hospital/fetchAll`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+        });
+
+        if (response.data.success) {
+          setHospitalCount(response.data.pagination.total);
         }
-      );
 
-      if (response.data.success) {
-        setHospitalCount(response.data.pagination.total);
+        console.log("Hospital data:", response.data);
+      } catch (error) {
+        console.error("Error fetching hospital data:", error);
       }
+    };
 
-      console.log("Hospital data:", response.data);
-    } catch (error) {
-      console.error("Error fetching hospital data:", error);
-    }
-  };
-
-  fetchHospitalData();
-}, [token]);
+    fetchHospitalData();
+  }, [token]);
   // Table data
   // const columns = [
   //   { key: "name", label: "Doctor Name" },
@@ -142,7 +138,7 @@ useEffect(() => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         <CustStatsCard
           title="Hospital Onboarded"
-          count={hospitalCount} 
+          count={hospitalCount}
           //   linkText="View All Doctors"
           //   linkTo="/alldoctors"
           icon={<Hospital trokeWidth={1.25} />}
@@ -185,10 +181,8 @@ useEffect(() => {
         /> */}
       </div>
 
-      {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Area Chart */}
-        <div className="bg-white p-5 rounded-xl shadow-sm">
+        {/* <div className="bg-white p-5 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Award size={20} className="text-blue-500" /> Appointments & Revenue
             Trend
@@ -218,7 +212,6 @@ useEffect(() => {
           </ResponsiveContainer>
         </div>
 
-        {/* Pie Chart */}
         <div className="bg-white p-5 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-4">Appointment Status</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -245,11 +238,10 @@ useEffect(() => {
               <Legend />
             </PieChart>
           </ResponsiveContainer>
-        </div>
+        </div> */}
       </div>
 
-      {/* Bar Chart */}
-      <div className="bg-white p-5 rounded-xl shadow-sm mb-8">
+      {/* <div className="bg-white p-5 rounded-xl shadow-sm mb-8">
         <h3 className="text-lg font-semibold mb-4">
           Appointments by Department
         </h3>
@@ -263,7 +255,7 @@ useEffect(() => {
             <Bar dataKey="appointments" fill="#64B5F6" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
-      </div>
+      </div> */}
 
       {/* Top Doctors Table */}
     </div>
