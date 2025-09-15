@@ -10,16 +10,19 @@ const AppRoutes = [
     path: "/dashboard",
     element: <Dashboard />,
     title: "Dashboard",
+    requiredRole: "SUPERADMIN",
   },
   {
     path: "/hospital",
     element: <Hospital />,
     title: "Hospitals",
+    requiredRole: "SUPERADMIN",
   },
   {
     path: "/addhospital",
     element: <AddHospital />,
     title: "Add Hospital",
+    requiredRole: "SUPERADMIN",
   },
   {
     path: "/patient",
@@ -30,11 +33,13 @@ const AppRoutes = [
     path: "/settings",
     element: <Settings />,
     title: "Settings",
+    requiredRole: "SUPERADMIN",
   },
   {
     path: "/edithospital/:id",
     element: <EditHospital />,
     title: "Edit Hospital",
+    requiredRole: "SUPERADMIN",
   },
 ];
 

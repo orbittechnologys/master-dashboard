@@ -30,12 +30,15 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        `${BASE_URL}/user/login`,
-        formData
-      );
+      const response = await axios.post(`${BASE_URL}/user/login`, formData);
 
       if (response.data.success && response.data.data.token) {
+        if (response.data.data.role !== "SUPERADMIN") {
+          toast.error("Access denied. Only SUPERADMIN can login.");
+          setIsLoading(false);
+          return;
+        }
+
         sessionStorage.setItem("authToken", response.data.data.token);
         sessionStorage.setItem("userData", JSON.stringify(response.data.data));
         sessionStorage.setItem("isAuthenticated", "true");

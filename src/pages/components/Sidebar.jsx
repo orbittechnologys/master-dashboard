@@ -23,11 +23,10 @@ const Sidebar = () => {
 
   // Get user info from sessionStorage or use defaults
   const userName = sessionStorage.getItem("username") || "User Name";
-  const fetchedRole = sessionStorage.getItem("role") || "SUPER_ADMIN";
-
+  const fetchedRole = sessionStorage.getItem("userRole") || "SUPERADMIN";
   // Navigation links based on user role
   const navLinks = {
-    SUPER_ADMIN: [
+    SUPERADMIN: [
       { name: "Dashboard", icon: <Home size={20} />, path: "/dashboard" },
       { name: "Hospitals", icon: <Building2 size={20} />, path: "/hospital" },
       // { name: "Patients", icon: <Users size={20} />, path: "/patient" },
