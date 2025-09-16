@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { PlusCircle, X, Upload } from "lucide-react";
 import axios from "axios";
 import uploadToAzureStorage from "../../utils/UploadToAzureStorage";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../constants";
+=======
+import GoogleMapPicker from "./MapPicker";
+>>>>>>> 060942770a542ba8835efeb10eb34f4f0aadab0b
 
 export default function AddHospital() {
   const navigate = useNavigate();
@@ -20,9 +24,15 @@ export default function AddHospital() {
     pocName: "",
     pocPhone: "",
     pocEmail: "",
+<<<<<<< HEAD
     consultationFee: "",
     latitude: "",
     longitude: "",
+=======
+    // consultationFee: "",
+    latitude: null,
+    longitude: null,
+>>>>>>> 060942770a542ba8835efeb10eb34f4f0aadab0b
   });
   const [departmentsList, setDepartmentsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -65,7 +75,11 @@ export default function AddHospital() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+<<<<<<< HEAD
     // setError((prev) => ({ ...prev, [name]: "" })); // clear error on change
+=======
+    // setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
+>>>>>>> 060942770a542ba8835efeb10eb34f4f0aadab0b
   };
 
   const handleFileChange = (e) => {
@@ -106,6 +120,10 @@ export default function AddHospital() {
         !form.pocName ||
         !form.pocPhone ||
         !form.pocEmail ||
+<<<<<<< HEAD
+=======
+        // !form.consultationFee ||
+>>>>>>> 060942770a542ba8835efeb10eb34f4f0aadab0b
         form.departments.length === 0
       ) {
         throw new Error("Please fill all required fields");
@@ -134,10 +152,21 @@ export default function AddHospital() {
             city: form.city,
             state: form.state,
           },
+<<<<<<< HEAD
           location: {
             latitude: form.latitude,
             longitude: form.longitude,
           },
+=======
+          ...(form.latitude != null && form.longitude != null
+            ? {
+                location: {
+                  latitude: form.latitude,
+                  longitude: form.longitude,
+                },
+              }
+            : {}),
+>>>>>>> 060942770a542ba8835efeb10eb34f4f0aadab0b
         },
         admin: {
           username: form.pocName,
@@ -145,7 +174,11 @@ export default function AddHospital() {
           phone: form.pocPhone,
           profileImg: "",
         },
+<<<<<<< HEAD
         consultationFee: 0,
+=======
+        // consultationFee: parseInt(form.consultationFee) || 0,
+>>>>>>> 060942770a542ba8835efeb10eb34f4f0aadab0b
         departments: form.departments,
       };
 
@@ -176,7 +209,7 @@ export default function AddHospital() {
           pocName: "",
           pocPhone: "",
           pocEmail: "",
-          consultationFee: "",
+          // consultationFee: "",
         });
         toast.success("Hospital added successfully!");
         navigate("/hospital");
@@ -284,6 +317,27 @@ export default function AddHospital() {
           />
         </div>
 
+<<<<<<< HEAD
+=======
+        {/* Consultation Fee */}
+        {/* 
+        <div>
+          <label className="block mb-1 font-medium">
+            Consultation Fee (₹) *
+          </label>
+          <input
+            type="number"
+            name="consultationFee"
+            value={form.consultationFee}
+            onChange={handleChange}
+            required
+            min="0"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4DB6AC] outline-none"
+          />
+        </div>
+        */}
+
+>>>>>>> 060942770a542ba8835efeb10eb34f4f0aadab0b
         {/* Departments Multi Select */}
         <div className="md:col-span-2">
           <label className="block mb-2 font-medium">Departments *</label>
@@ -306,6 +360,34 @@ export default function AddHospital() {
           <h2 className="text-lg font-semibold text-gray-700 mb-2">
             Address Details
           </h2>
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block mb-1 font-medium">Hospital Location</label>
+          <GoogleMapPicker
+            onLocationSelect={(data) =>
+              setForm((prev) => ({
+                ...prev,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                area: data.address || prev.area, // 👈 auto-fill Area field
+              }))
+            }
+          />
+          {/* <GoogleMapPicker
+            onLocationSelect={(data) => {
+              console.log(data);
+              setForm((prev) => ({
+                ...prev,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                area: data.area || prev.area, // 👈 auto-fill Area
+                city: data.city || prev.city, // 👈 auto-fill City
+                state: data.state || prev.state, // 👈 auto-fill State
+                pincode: data.pincode || prev.pincode, // 👈 auto-fill Pincode
+              }));
+            }}
+          /> */}
         </div>
 
         <div>
