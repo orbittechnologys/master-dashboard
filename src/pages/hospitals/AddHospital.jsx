@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { PlusCircle, X, Upload } from "lucide-react";
 import axios from "axios";
 import uploadToAzureStorage from "../../utils/UploadToAzureStorage";
+import GoogleMapPicker from "./MapPicker";
 
 export default function AddHospital() {
   const [form, setForm] = useState({
@@ -16,7 +17,9 @@ export default function AddHospital() {
     pocName: "",
     pocPhone: "",
     pocEmail: "",
-    consultationFee: "",
+    // consultationFee: "",
+    latitude: null,
+    longitude: null,
   });
   const [departmentsList, setDepartmentsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -62,7 +65,7 @@ export default function AddHospital() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
+    // setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
   };
 
   const handleFileChange = (e) => {
@@ -103,7 +106,7 @@ export default function AddHospital() {
         !form.pocName ||
         !form.pocPhone ||
         !form.pocEmail ||
-        !form.consultationFee ||
+        // !form.consultationFee ||
         form.departments.length === 0
       ) {
         throw new Error("Please fill all required fields");
@@ -132,6 +135,14 @@ export default function AddHospital() {
             city: form.city,
             state: form.state,
           },
+          ...(form.latitude != null && form.longitude != null
+            ? {
+                location: {
+                  latitude: form.latitude,
+                  longitude: form.longitude,
+                },
+              }
+            : {}),
         },
         admin: {
           username: form.pocName,
@@ -139,7 +150,7 @@ export default function AddHospital() {
           phone: form.pocPhone,
           profileImg: "",
         },
-        consultationFee: parseInt(form.consultationFee) || 0,
+        // consultationFee: parseInt(form.consultationFee) || 0,
         departments: form.departments,
       };
 
@@ -170,7 +181,7 @@ export default function AddHospital() {
           pocName: "",
           pocPhone: "",
           pocEmail: "",
-          consultationFee: "",
+          // consultationFee: "",
         });
       } else {
         setError(response.data.message || "Failed to add hospital");
@@ -274,6 +285,7 @@ export default function AddHospital() {
         </div>
 
         {/* Consultation Fee */}
+        {/* 
         <div>
           <label className="block mb-1 font-medium">
             Consultation Fee (₹) *
@@ -288,6 +300,7 @@ export default function AddHospital() {
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#4DB6AC] outline-none"
           />
         </div>
+        */}
 
         {/* Departments Multi Select */}
         <div className="md:col-span-2">
@@ -311,6 +324,34 @@ export default function AddHospital() {
           <h2 className="text-lg font-semibold text-gray-700 mb-2">
             Address Details
           </h2>
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block mb-1 font-medium">Hospital Location</label>
+          <GoogleMapPicker
+            onLocationSelect={(data) =>
+              setForm((prev) => ({
+                ...prev,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                area: data.address || prev.area, // 👈 auto-fill Area field
+              }))
+            }
+          />
+          {/* <GoogleMapPicker
+            onLocationSelect={(data) => {
+              console.log(data);
+              setForm((prev) => ({
+                ...prev,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                area: data.area || prev.area, // 👈 auto-fill Area
+                city: data.city || prev.city, // 👈 auto-fill City
+                state: data.state || prev.state, // 👈 auto-fill State
+                pincode: data.pincode || prev.pincode, // 👈 auto-fill Pincode
+              }));
+            }}
+          /> */}
         </div>
 
         <div>
