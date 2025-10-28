@@ -24,6 +24,7 @@ export default function AddHospital() {
     // consultationFee: "",
     latitude: null,
     longitude: null,
+    logoPreview: null,
   });
   const [departmentsList, setDepartmentsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,10 +32,7 @@ export default function AddHospital() {
   const [success, setSuccess] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Get authentication token
   const token = sessionStorage.getItem("authToken");
-
-  // Fetch departments from API using Axios
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -66,12 +64,22 @@ export default function AddHospital() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    // setErrors((prev) => ({ ...prev, [name]: "" })); // clear error on change
   };
 
+  // const handleFileChange = (e) => {
+  //   setForm({ ...form, logo: e.target.files[0] });
+  // };
+
   const handleFileChange = (e) => {
-    setForm({ ...form, logo: e.target.files[0] });
-  };
+  const file = e.target.files[0];
+  if (file) {
+    setForm({
+      ...form,
+      logo: file,
+      logoPreview: URL.createObjectURL(file), // 👈 adds a preview URL
+    });
+  }
+};
 
   const handleDepartmentChange = (deptId) => {
     setForm((prev) => ({
@@ -87,8 +95,6 @@ export default function AddHospital() {
     setLoading(true);
     setError("");
     setSuccess("");
-
-    // Check if user is authenticated
     if (!token) {
       setError("Authentication token not found. Please login again.");
       setLoading(false);
@@ -96,7 +102,6 @@ export default function AddHospital() {
     }
 
     try {
-      // Validate required fields
       if (
         !form.name ||
         !form.description ||
@@ -113,7 +118,6 @@ export default function AddHospital() {
         throw new Error("Please fill all required fields");
       }
 
-      // Upload logo if exists
       let logoUrl = "";
       if (form.logo) {
         try {
@@ -123,7 +127,6 @@ export default function AddHospital() {
         }
       }
 
-      // Prepare request body
       const requestBody = {
         hospital: {
           name: form.name,
@@ -151,11 +154,9 @@ export default function AddHospital() {
           phone: form.pocPhone,
           profileImg: "",
         },
-        // consultationFee: parseInt(form.consultationFee) || 0,
         departments: form.departments,
       };
 
-      // Make API call using Axios with authentication
       const response = await axios.post(
         `${BASE_URL}/hospital/add`,
         requestBody,
@@ -169,7 +170,6 @@ export default function AddHospital() {
 
       if (response.data.success) {
         setSuccess("Hospital added successfully!");
-        // Reset form
         setForm({
           name: "",
           logo: null,
@@ -182,7 +182,6 @@ export default function AddHospital() {
           pocName: "",
           pocPhone: "",
           pocEmail: "",
-          // consultationFee: "",
         });
         toast.success("Hospital added successfully!");
         navigate("/hospital");
@@ -198,7 +197,7 @@ export default function AddHospital() {
       } else {
         setError(
           err.response?.data?.message ||
-            err.message ||
+           err.response?.data?.msg ||
             "An error occurred while adding the hospital"
         );
       }
@@ -208,7 +207,6 @@ export default function AddHospital() {
     }
   };
 
-  // Redirect to login if no token
   if (!token) {
     return (
       <div className="p-6 bg-gray-50 min-h-screen mt-16 flex items-center justify-center">
@@ -274,11 +272,22 @@ export default function AddHospital() {
             </label>
             {form.logo && <span className="text-sm">{form.logo.name}</span>}
           </div>
+
+          {/* 👇 Image preview section */}
+          {form.logoPreview && (
+            <div className="mt-3">
+              <img
+                src={form.logoPreview}
+                alt="Logo Preview"
+                className="h-24 w-24 object-cover rounded-lg border"
+              />
+            </div>
+          )}
         </div>
 
         {/* Description */}
         <div className="md:col-span-2">
-          <label className="block mb-1 font-medium">Description *</label>
+          <label className="block mb-1 font-medium">Description * <small>(max 200 words)</small></label>
           <textarea
             name="description"
             value={form.description}
@@ -310,7 +319,9 @@ export default function AddHospital() {
 
         {/* Departments Multi Select */}
         <div className="md:col-span-2">
-          <label className="block mb-2 font-medium">Departments *</label>
+          <label className="block mb-2 font-medium">
+            Departments <small>(optional)</small>
+          </label>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-3">
             {departmentsList.map((dept) => (
               <label key={dept._id} className="flex items-center gap-2">

@@ -378,7 +378,7 @@ export default function EditHospital() {
           {/* Departments */}
           <div className="md:col-span-2">
             <label className="block mb-2 font-medium">Departments</label>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-3">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-3">
               {allDepartments.map((dept) => (
                 <label key={dept._id} className="flex items-center gap-2">
                   <input
@@ -389,7 +389,23 @@ export default function EditHospital() {
                   <span className="text-sm">{dept.name}</span>
                 </label>
               ))}
-            </div>
+            </div> */}
+            {departments.length > 0 ? (
+              <ul className="list-disc pl-5 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                {departments
+                  .map((deptId) => allDepartments.find((d) => d._id === deptId))
+                  .filter(Boolean)
+                  .map((dept) => (
+                    <li key={dept._id} className="text-sm text-gray-700">
+                      {dept.name}
+                    </li>
+                  ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                No departments assigned.
+              </p>
+            )}
 
             {/* {showAddDept ? (
               <div className="flex gap-2 mt-3">
