@@ -267,9 +267,9 @@ export default function Hospital() {
                 >
                   <Edit size={14} /> Edit
                 </button>
-                <button className="flex items-center justify-center gap-1 px-2 py-1.5 bg-red-500 text-white rounded text-xs hover:bg-red-600">
+                {/* <button className="flex items-center justify-center gap-1 px-2 py-1.5 bg-red-500 text-white rounded text-xs hover:bg-red-600">
                   <Slash size={14} /> Suspend
-                </button>
+                </button> */}
               </div>
             </div>
           ))
