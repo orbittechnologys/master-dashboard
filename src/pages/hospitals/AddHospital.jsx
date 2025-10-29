@@ -289,7 +289,7 @@ export default function AddHospital() {
         {/* Description */}
         <div className="md:col-span-2">
           <label className="block mb-1 font-medium">
-            Description * <small>(max 200 words)</small>
+            Description * <small>(max 200 characters)</small>
           </label>
           <textarea
             name="description"
