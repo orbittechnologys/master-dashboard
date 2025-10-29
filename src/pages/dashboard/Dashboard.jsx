@@ -1,34 +1,8 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaUserDoctor } from "react-icons/fa6";
-
-import {
-  BadgeIndianRupee,
-  ClipboardClock,
-  IdCard,
-  Network,
-  Award,
-  Hospital,
-  CalendarDays,
-  Banknote,
-} from "lucide-react";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-  Legend,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+import { Hospital } from "lucide-react";
 import { BASE_URL } from "../../constants";
+import CustTable from "../components/CustTable";
 
 const CustStatsCard = ({
   title,
@@ -50,214 +24,128 @@ const CustStatsCard = ({
         <span className={iconColor}>{icon}</span>
       </div>
     </div>
-    {/* <a
-      href={linkTo}
-      className="text-blue-600 text-sm mt-4 inline-block hover:underline"
-    >
-      {linkText} →
-    </a> */}
   </div>
 );
 
 const Dashboard = () => {
-  // Data for charts
-  const areaChartData = [
-    { name: "Jan", appointments: 400, revenue: 2400 },
-    { name: "Feb", appointments: 300, revenue: 1398 },
-    { name: "Mar", appointments: 200, revenue: 9800 },
-    { name: "Apr", appointments: 278, revenue: 3908 },
-    { name: "May", appointments: 189, revenue: 4800 },
-    { name: "Jun", appointments: 239, revenue: 3800 },
-    { name: "Jul", appointments: 349, revenue: 4300 },
-  ];
-
-  const barData = [
-    { name: "Cardiology", appointments: 400 },
-    { name: "Dermatology", appointments: 320 },
-    { name: "Neurology", appointments: 500 },
-    { name: "Pediatrics", appointments: 450 },
-    { name: "Orthopedics", appointments: 380 },
-  ];
-
-  const pieData = [
-    { name: "Completed", value: 75 },
-    { name: "Scheduled", value: 15 },
-    { name: "Cancelled", value: 10 },
-  ];
-
-  const COLORS = ["#4DB6AC", "#64B5F6", "#EF4256"];
   const token = sessionStorage.getItem("authToken");
 
   const [hospitalCount, setHospitalCount] = useState(0);
+  const [tableData, setTableData] = useState([]);
+  const [filter, setFilter] = useState("today");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
+  const columns = [
+    { key: "hospitalName", label: "Hospital Name" },
+    { key: "totalAppointments", label: "Appointments" },
+    { key: "uniquePatientsCount", label: "Patients" },
+  ];
+
+  // 🔹 Fetch total hospitals
   useEffect(() => {
-    const fetchHospitalData = async () => {
+    const fetchHospitalCount = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/hospital/fetchAll`, {
+        const res = await axios.get(`${BASE_URL}/hospital/fetchAll`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
-
-        if (response.data.success) {
-          setHospitalCount(response.data.pagination.total);
+        if (res.data.success) {
+          setHospitalCount(res.data.pagination.total);
         }
-
-        console.log("Hospital data:", response.data);
-      } catch (error) {
-        console.error("Error fetching hospital data:", error);
+      } catch (err) {
+        console.error("Error fetching hospital count:", err);
       }
     };
 
-    fetchHospitalData();
+    fetchHospitalCount();
   }, [token]);
-  // Table data
-  // const columns = [
-  //   { key: "name", label: "Doctor Name" },
-  //   { key: "qualification", label: "Qualification", className: "text-center" },
-  //   { key: "department", label: "Department" },
-  //   {
-  //     key: "totalAppointments",
-  //     label: "Total Appointment",
-  //     className: "text-center",
-  //   },
-  //   { key: "joiningDate", label: "Joining Date", className: "text-center" },
-  //   {
-  //     key: "yearsinPractice",
-  //     label: "Years in Practice",
-  //     className: "text-center",
-  //   },
-  // ];
+
+  const fetchHospitalStats = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${BASE_URL}/appointment/getHospitalPatientStats?filter=${filter}&page=${page}&pageSize=10`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.data.success && Array.isArray(res.data.data)) {
+        setTableData(res.data.data);
+        setTotalPages(res.data.pagination?.totalPages || 1);
+      } else {
+        setTableData([]);
+        setTotalPages(1);
+      }
+    } catch (err) {
+      console.error("Error fetching hospital stats:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHospitalStats();
+  }, [filter, page]);
+
+  const filters = ["today", "week", "month", "quarter", "year"];
 
   return (
     <div className="p-6 bg-background min-h-screen mt-16">
       <h2 className="mb-5 text-gray-800 font-semibold text-xl">Dashboard</h2>
 
-      {/* Stats Cards */}
+      {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         <CustStatsCard
-          title="Hospital Onboarded"
+          title="Hospitals Onboarded"
           count={hospitalCount}
-          //   linkText="View All Doctors"
-          //   linkTo="/alldoctors"
-          icon={<Hospital trokeWidth={1.25} />}
+          icon={<Hospital strokeWidth={1.25} />}
           iconColor="text-[#287FC4]"
-          iconSize={32}
           iconBg="bg-[#287FC4]/20"
         />
-
-        {/* <CustStatsCard
-          title="Total Appointments"
-          count={67}
-          linkText="View All Appointments"
-          linkTo="/allappointments"
-          icon={<CalendarDays strokeWidth={1.25} />}
-          iconColor="text-[#EE7526]"
-          iconSize={32}
-          iconBg="bg-[#EE7526]/20"
-        />
-
-        <CustStatsCard
-          title="Today's Appointments"
-          count={217}
-          linkText="View All Staff"
-          linkTo="/allstaff"
-          icon={<IdCard strokeWidth={1.25} />}
-          iconColor="text-[#EF4256]"
-          iconSize={32}
-          iconBg="bg-[#EF4256]/20"
-        />
-
-        <CustStatsCard
-          title="Revenue"
-          count={23}
-          linkText="View All Appointments"
-          linkTo="/allappointments"
-          icon={<Banknote strokeWidth={1.25} />}
-          iconColor="text-[#E5AD01]"
-          iconSize={32}
-          iconBg="bg-[#E5AD01]/20"
-        /> */}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* <div className="bg-white p-5 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Award size={20} className="text-blue-500" /> Appointments & Revenue
-            Trend
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={areaChartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Area
-                type="monotone"
-                dataKey="appointments"
-                stroke="#4DB6AC"
-                fill="#4DB6AC"
-                fillOpacity={0.3}
-              />
-              <Area
-                type="monotone"
-                dataKey="revenue"
-                stroke="#8884d8"
-                fill="#8884d8"
-                fillOpacity={0.3}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+      {/* Filters */}
+      <div className="flex flex-wrap gap-3 mb-6">
+        {filters.map((f) => (
+          <button
+            key={f}
+            onClick={() => {
+              setFilter(f);
+              setPage(1);
+            }}
+            className={`px-4 py-2 text-sm rounded-md border transition ${
+              filter === f
+                ? "bg-primary text-white border-pribg-primary"
+                : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
+            }`}
+          >
+            {f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {/* Table */}
+      {loading ? (
+        <div className="flex justify-center py-10 text-gray-500">
+          Loading data...
         </div>
-
-        <div className="bg-white p-5 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Appointment Status</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                fill="#8884d8"
-                paddingAngle={5}
-                dataKey="value"
-                label
-              >
-                {pieData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div> */}
-      </div>
-
-      {/* <div className="bg-white p-5 rounded-xl shadow-sm mb-8">
-        <h3 className="text-lg font-semibold mb-4">
-          Appointments by Department
-        </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={barData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="appointments" fill="#64B5F6" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div> */}
-
-      {/* Top Doctors Table */}
+      ) : (
+        <CustTable
+          columns={columns}
+          data={tableData}
+          page={page}
+          setPage={setPage}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 };

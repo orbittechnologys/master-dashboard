@@ -71,15 +71,15 @@ export default function AddHospital() {
   // };
 
   const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    setForm({
-      ...form,
-      logo: file,
-      logoPreview: URL.createObjectURL(file), // 👈 adds a preview URL
-    });
-  }
-};
+    const file = e.target.files[0];
+    if (file) {
+      setForm({
+        ...form,
+        logo: file,
+        logoPreview: URL.createObjectURL(file), // 👈 adds a preview URL
+      });
+    }
+  };
 
   const handleDepartmentChange = (deptId) => {
     setForm((prev) => ({
@@ -95,6 +95,7 @@ export default function AddHospital() {
     setLoading(true);
     setError("");
     setSuccess("");
+
     if (!token) {
       setError("Authentication token not found. Please login again.");
       setLoading(false);
@@ -111,9 +112,7 @@ export default function AddHospital() {
         !form.pincode ||
         !form.pocName ||
         !form.pocPhone ||
-        !form.pocEmail ||
-        // !form.consultationFee ||
-        form.departments.length === 0
+        !form.pocEmail
       ) {
         throw new Error("Please fill all required fields");
       }
@@ -154,7 +153,9 @@ export default function AddHospital() {
           phone: form.pocPhone,
           profileImg: "",
         },
-        departments: form.departments,
+        ...(form.departments?.length > 0
+          ? { departments: form.departments }
+          : {}),
       };
 
       const response = await axios.post(
@@ -197,7 +198,7 @@ export default function AddHospital() {
       } else {
         setError(
           err.response?.data?.message ||
-           err.response?.data?.msg ||
+            err.response?.data?.msg ||
             "An error occurred while adding the hospital"
         );
       }
@@ -287,7 +288,9 @@ export default function AddHospital() {
 
         {/* Description */}
         <div className="md:col-span-2">
-          <label className="block mb-1 font-medium">Description * <small>(max 200 words)</small></label>
+          <label className="block mb-1 font-medium">
+            Description * <small>(max 200 words)</small>
+          </label>
           <textarea
             name="description"
             value={form.description}
