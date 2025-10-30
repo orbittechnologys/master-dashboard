@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   const [hospitalCount, setHospitalCount] = useState(0);
   const [tableData, setTableData] = useState([]);
-  const [filter, setFilter] = useState("today");
+  const [filter, setFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -95,7 +95,7 @@ const Dashboard = () => {
     fetchHospitalStats();
   }, [filter, page]);
 
-  const filters = ["today", "week", "month", "quarter", "year"];
+  const filters = ["all", "today", "week", "month", "quarter", "year"];
 
   return (
     <div className="p-6 bg-background min-h-screen mt-16">
